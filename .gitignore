@@ -1,0 +1,14 @@
+/.idea
+.env
+*.log
+*.exe~
+*.exe
+.VSCodeCounter/
+logs
+protos
+go-websocket
+config/prod
+config/develop
+go.mod
+go.sum
+tmp

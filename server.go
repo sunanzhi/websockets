@@ -1,15 +1,27 @@
-package websocket
+package websockets
 
-import "net"
+import (
+	"net/http"
+)
 
 type Server struct {
-	manager      *Manager
-	listener     net.Listener
+	Manager  *Manager
+	Protocol Protocol
+	Subscriber Subscriber
 }
 
-func NewServer(listener net.Listener) *Server {
+func InitServer(protocol Protocol, Subscriber Subscriber) *Server {
 	return &Server{
-		manager:      InitManager(),
-		listener:     listener,
+		Manager:  InitManager(),
+		Protocol: protocol,
+		Subscriber: Subscriber,
+	}
+}
+
+func Listen(addr string, pattern string, handler func(http.ResponseWriter, *http.Request)) {
+	http.HandleFunc(pattern, handler)
+	err := http.ListenAndServe(addr, nil)
+	if err != nil {
+		panic(err.Error())
 	}
 }

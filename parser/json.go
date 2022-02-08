@@ -63,16 +63,9 @@ func (j *JsonProtocol) Receive(c *websockets.Client, msg []byte) error {
 	return nil
 }
 
-func (j *JsonProtocol) Send(c *websockets.Client, msg interface{}) error {
+func (j *JsonProtocol) Send(c *websockets.Client, msg websockets.SubscriberBody) error {
 	var out jsonOut
-	t := reflect.TypeOf(msg)
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-	if protocol, exists := j.names[t]; exists {
-		out.Protocol = protocol
-	}
-	out.Body = msg
+	out.Body = msg.Data
 
 	res, err := json.Marshal(out)
 	if err != nil {
